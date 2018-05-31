@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row">
+        <div class="col s12 m4">
+            <div class="card">
+                <div class="card-image">
+                    <img src= "https://materializecss.com/images/office.jpg"></img>
+                </div>
+                <div class="card-content">
+                    <div class="card-title"><%= current_user.name %></div>
+                    <p>이메일 : <%= current_user.email %></p>
+                    <p>작성하신 글은 <%= @posts_count %> 개 입니다.</p>
+                    <p>Follower : <%= current_user.followers.length %></p>
+                    <p>Following : <%= current_user.followings.length %></p>
+                    
+                    <%= link_to new_post_path do %>
+                        <button class="btn">글 쓰 기</button>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m8">
+            <% @posts.each do |post| %>
+               <%= render partial: "post", object: post %>
+            <% end %>
+        </div>
+    </div>
+</div>
