@@ -15,14 +15,13 @@
 
   <body>
     <nav>
-      <div class="nav-wrapper">
-        <a href="/" class="brand-logo center">Blog</a>
-        <ul class="left hide-on-med-and-down">
+      <div class="nav-wrapper teal #ff8f00 amber darken-3">
+        <a href="/" class="brand-logo center",>Blog</a></span>
+        <ul class="right hide-on-med-and-down">
           
           <% if user_signed_in? %>
-            <li><%= current_user.name%></li>
+            <li><%=link_to current_user.name, post_mypage_path(current_user.id), method: 'get' %></li>
             <li><%=link_to 'Sign out', destroy_user_session_path, method: 'delete' %></li>
-            <li><%=link_to 'My Page', mypage_path, method: 'post' %></li>
           <% else %>
           <li><a href="/users/sign_up">Sign up</a></li>
           <li><a href="/users/sign_in">Sign in</a></li>

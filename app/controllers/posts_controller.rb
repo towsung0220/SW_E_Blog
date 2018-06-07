@@ -44,7 +44,7 @@ class PostsController < ApplicationController
     redirect_to root_path
   end
   
-  def mypage
+  def show
     @myposts = Post.where(user_id: [current_user.id, Follow.find_by(followed_id: params[:followed_id], follower_id: current_user.id)])
   end
   

@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="row">
+        <div class="col s12 m4">
+            <div class="card">
+                <div class="card-image">
+                    <img src= "/human.jpeg"></img>
+                </div>
+                <div class="card-content">
+                    <div class="card-title"><%= current_user.name %></div>
+                    <p>이메일 : <%= current_user.email %></p>
+                    <p>작성하신 글은 <%= @posts_count %> 개 입니다.</p>
+                    <p>Follower : <%= current_user.followers.length %></p>
+                    <p>Following : <%= current_user.followings.length %></p>
+                    <p><a class="waves-effect waves-light btn" href="/users/edit">Edit User</a></p>
+                    <!--<%= link_to new_post_path do %>-->
+                    <!--    <button class="btn">글 쓰 기</button>-->
+                    <!--<% end %>-->
+                </div>
+            </div>
+        </div>
+        <span class="fixed-action-btn">
+                <%= link_to new_post_path do %>
+                    <button class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></button>
+                <% end %>
+        </span>
+        <div class="col s12 m8">
+            <% @myposts.each do |post| %>
+                <div class="card">
+                    <div class="card post" data-post-id="<%= post.id %>">
+                        <div class="card-content">
+                            <span class="card-title"><%= post.user.name %></span>
+                            <span><%= post.created_at %></span>
+                                <% if user_signed_in? && current_user != post.user %>
+                                  <% if current_user.followings.include?(post.user) %>
+                                    <%= form_tag follow_path(post.user.id), method: :delete, class: "right" do %>
+                                      <button class="btn margin-bottom">UnFollow</button>
+                                    <% end %>
+                                  <% else %>
+                                    <%= form_tag follows_path, method: :post, class: "right" do %>
+                                      <input type="hidden" name="followed_id" value="<%= post.user.id %>" />
+                                      <button class="btn margin-bottom">Follow</button>
+                                    <% end %>
+                                  <% end %>
+                                <% end %>
+                            <div class="card-image">
+                                <% if post.image.url %>
+                                  <img class="margin-bottom" src="<%= post.image.url %>" />
+                                <% end %>
+                            </div>
+                            <p class= "pre-line margin-top"><%= post.content %></p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-action">
+                        <%= post.likes.size %> 좋아요.
+                        <% if current_user.is_like?(post)%>
+                            <%= link_to "좋아요 취소", post_like_path(post), method: "post"%>
+                        <% else %>
+                            <%= link_to "좋아요", post_like_path(post), method: "post" %>
+                        <% end %>
+                        <% if current_user.id == post.user_id %>
+                            <%= link_to "삭제", post_path(post), method: "delete", class: "right" %>
+                            <%= link_to "수정", edit_post_path(post), class: "right" %>
+                        <% end %>    
+                        
+                        <%= form_tag post_comments_path(post) do %>
+                            <div  class="input-field">
+                                <%= text_area_tag :content, nil, class: "materialize-textarea" %>
+                            </div>
+                            <div class="input-field">
+                                <%= button_tag "댓글 쓰기", class: "btn" %>
+                            </div>
+                        <% end %>
+                        <% if post.comments.present? %>
+                            <ul class="collection">
+                                <% post.comments.each do |comment| %>
+                                    <li class="collection-item">
+                                        <span class="title"><%= comment.user.name %></span>
+                                        <span class="right"><%= comment.created_at %></span>
+                                        <p class="pre-line"><%= comment.content %></p>
+                                        <% if comment.user.id == current_user.id %>
+                                            <div><%= link_to "삭제", post_comment_path(post, comment), method: "delete" %></div>
+                                        <% end %>
+                                    </li>
+                                <% end %>
+                            </ul>
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
