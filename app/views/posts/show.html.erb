@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col s12 m4">
+        <div class="col s12 m3">
             <div class="card">
                 <div class="card-image">
                     <img src= "/human.jpeg"></img>
@@ -11,7 +11,7 @@
                     <p>작성하신 글은 <%= @posts_count %> 개 입니다.</p>
                     <p>Follower : <%= current_user.followers.length %></p>
                     <p>Following : <%= current_user.followings.length %></p>
-                    <p><a class="waves-effect waves-light btn" href="/users/edit">Edit User</a></p>
+                    <p><a class="waves-effect waves-light btn orange lighten-3" href="/users/edit">Edit User</a></p>
                     <!--<%= link_to new_post_path do %>-->
                     <!--    <button class="btn">글 쓰 기</button>-->
                     <!--<% end %>-->
@@ -33,12 +33,12 @@
                                 <% if user_signed_in? && current_user != post.user %>
                                   <% if current_user.followings.include?(post.user) %>
                                     <%= form_tag follow_path(post.user.id), method: :delete, class: "right" do %>
-                                      <button class="btn margin-bottom">UnFollow</button>
+                                      <button class="btn margin-bottom deep-orange lighten-3">UnFollow</button>
                                     <% end %>
                                   <% else %>
                                     <%= form_tag follows_path, method: :post, class: "right" do %>
                                       <input type="hidden" name="followed_id" value="<%= post.user.id %>" />
-                                      <button class="btn margin-bottom">Follow</button>
+                                      <button class="btn margin-bottom deep-orange lighten-3">Follow</button>
                                     <% end %>
                                   <% end %>
                                 <% end %>
@@ -52,23 +52,22 @@
                     </div>
                     
                     <div class="card-action">
-                        <%= post.likes.size %> 좋아요.
-                        <% if current_user.is_like?(post)%>
-                            <%= link_to "좋아요 취소", post_like_path(post), method: "post"%>
-                        <% else %>
-                            <%= link_to "좋아요", post_like_path(post), method: "post" %>
-                        <% end %>
-                        <% if current_user.id == post.user_id %>
-                            <%= link_to "삭제", post_path(post), method: "delete", class: "right" %>
-                            <%= link_to "수정", edit_post_path(post), class: "right" %>
-                        <% end %>    
-                        
+                        <img src="/thumbs-up.png"></img><span class="orange-text text-darken-4"><%= post.likes.size %></span>
+                            <% if current_user.is_like?(post)%>
+                                <%= link_to "Cancel", post_like_path(post), method: "post"%>
+                            <% else %>
+                                <%= link_to "Like", post_like_path(post), method: "post" %>
+                            <% end %>
+                            <% if current_user.id == post.user_id %>
+                                <%= link_to "Delete", post_path(post), method: "delete", class: "right" %>
+                                <%= link_to "Edit", edit_post_path(post), class: "right" %>
+                            <% end %>   
                         <%= form_tag post_comments_path(post) do %>
                             <div  class="input-field">
                                 <%= text_area_tag :content, nil, class: "materialize-textarea" %>
                             </div>
                             <div class="input-field">
-                                <%= button_tag "댓글 쓰기", class: "btn" %>
+                                <%= button_tag "Submit", class: "btn orange lighten-3" %>
                             </div>
                         <% end %>
                         <% if post.comments.present? %>
@@ -79,7 +78,7 @@
                                         <span class="right"><%= comment.created_at %></span>
                                         <p class="pre-line"><%= comment.content %></p>
                                         <% if comment.user.id == current_user.id %>
-                                            <div><%= link_to "삭제", post_comment_path(post, comment), method: "delete" %></div>
+                                            <div><%= link_to "Delete", post_comment_path(post, comment), method: "delete" %></div>
                                         <% end %>
                                     </li>
                                 <% end %>

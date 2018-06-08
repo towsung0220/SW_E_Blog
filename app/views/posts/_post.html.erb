@@ -6,12 +6,12 @@
                 <% if user_signed_in? && current_user != post.user %>
                   <% if current_user.followings.include?(post.user) %>
                     <%= form_tag follow_path(post.user.id), method: :delete, class: "right" do %>
-                      <button class="btn margin-bottom">UnFollow</button>
+                      <button class="btn margin-bottom deep-orange lighten-3">UnFollow</button>
                     <% end %>
                   <% else %>
                     <%= form_tag follows_path, method: :post, class: "right" do %>
                       <input type="hidden" name="followed_id" value="<%= post.user.id %>" />
-                      <button class="btn margin-bottom">Follow</button>
+                      <button class="btn margin-bottom deep-orange lighten-3">Follow</button>
                     <% end %>
                   <% end %>
                 <% end %>
@@ -41,7 +41,7 @@
                 <%= text_area_tag :content, nil, class: "materialize-textarea" %>
             </div>
             <div class="input-field">
-                <%= button_tag "Submit", class: "btn" %>
+                <%= button_tag "Submit", class: "btn orange lighten-3" %>
             </div>
         <% end %>
         <% if post.comments.present? %>

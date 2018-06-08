@@ -46,6 +46,7 @@ class PostsController < ApplicationController
   
   def show
     @myposts = Post.where(user_id: [current_user.id, Follow.find_by(followed_id: params[:followed_id], follower_id: current_user.id)])
+    @posts_count = current_user.posts.length
   end
   
   private
